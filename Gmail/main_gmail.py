@@ -83,7 +83,7 @@ def save_data_to_table(account: GmailAccount):
 try:
     login(info_account)
     change_name(info_account)
-    #change_password(info_account)
-    #save_data_to_table(info_account)
+    change_password(info_account)
+    save_data_to_table(info_account)
 finally:
     driver.quit()
