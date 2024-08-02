@@ -25,11 +25,10 @@ except ValidationError as e:
 
 
 user = fake_user_agent.user_agent()
-print(user)
 options = webdriver.ChromeOptions()
 options.add_argument(f'user-agent={user}')
 
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=options)
 
 
 def login(account: TwitterAccount):
@@ -56,7 +55,7 @@ def change_password(account: TwitterAccount):
     time.sleep(5)
 
 
-def post_tweet(msg:str):
+def post_tweet(msg: str):
     driver.get('https://x.com/home')
     time.sleep(3)
     driver.find_element(By.CSS_SELECTOR, 'div[data-testid="tweetTextarea_0"]').send_keys(msg)
@@ -67,7 +66,7 @@ def post_tweet(msg:str):
 
 try:
     login(info_account)
-    #change_password(info_account)
+    change_password(info_account)
     post_tweet('Something')
 finally:
     driver.quit()

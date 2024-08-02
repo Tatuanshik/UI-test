@@ -1,6 +1,5 @@
 import os
 import time
-import fake_user_agent
 import pandas as pd
 from dotenv import load_dotenv
 from pydantic import ValidationError
@@ -25,9 +24,6 @@ except ValidationError as e:
     print(f'Something wrong: {e}')
     exit(1)
 
-user = fake_user_agent.user_agent()
-options = webdriver.ChromeOptions()
-options.add_argument(f'user-agent={user}')
 
 driver = webdriver.Chrome()
 
@@ -44,17 +40,17 @@ def login(account: GmailAccount):
 
 
 def change_name(account: GmailAccount):
-    driver.get('https://myaccount.google.com/personal-info')
+    driver.get('https://account.google.com/personal-info')
     time.sleep(3)
     driver.find_element(By.PARTIAL_LINK_TEXT, 'Name').send_keys(Keys.RETURN)
     time.sleep(2)
     driver.find_element(By.CSS_SELECTOR, "[aria-label='Edit Name']").click()
-    time.sleep(2)
+    time.sleep(4)
     driver.find_element(By.ID, 'i7').clear()
-    driver.find_element(By.ID, 'i12').clear()
     driver.find_element(By.ID, 'i7').send_keys(account.first_name)
+    driver.find_element(By.ID, 'i12').clear()
     driver.find_element(By.ID, 'i12').send_keys(account.last_name)
-    driver.find_element(By.CSS_SELECTOR, '.UywwFc-vQzf8d').click()
+    driver.find_element(By.CLASS_NAME, 'UywwFc-vQzf8d').click()
     time.sleep(5)
 
 
@@ -87,7 +83,7 @@ def save_data_to_table(account: GmailAccount):
 try:
     login(info_account)
     change_name(info_account)
-    change_password(info_account)
-    save_data_to_table(info_account)
+    #change_password(info_account)
+    #save_data_to_table(info_account)
 finally:
     driver.quit()
